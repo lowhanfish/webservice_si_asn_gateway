@@ -35,10 +35,11 @@ Dokumen ini mencatat status, arsitektur, dan checkpoint pengembangan proyek `web
   - Pengujian berhasil mengambil kedua token BKN
   - Commit & Push ke Git
 
-- [ ] **Checkpoint 3: Core Gateway & Transparent Reverse Proxy**
+- [x] **Checkpoint 3: Core Gateway & Transparent Reverse Proxy**
   - Middleware proxy dinamis untuk meneruskan semua HTTP Method (`GET`, `POST`, `DELETE`, `PUT`) ke BKN
-  - Penanganan file upload (`multipart/form-data`) dan file download (stream PDF)
-  - Error handling terstandar
+  - Penanganan file upload (`multipart/form-data`) dan streaming download dokumen
+  - Auto-retry 1x dan auto-refresh token jika BKN merespon 401
+  - Pengujian live proxy berhasil mengambil data dari BKN dengan status 200 OK
   - Commit & Push ke Git
 
 - [ ] **Checkpoint 4: Swagger / OpenAPI 3.0 Documentation**
