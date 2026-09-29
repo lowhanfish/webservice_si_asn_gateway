@@ -29,9 +29,10 @@ Dokumen ini mencatat status, arsitektur, dan checkpoint pengembangan proyek `web
   - Inisialisasi `package.json` dan instalasi dependensi (Express, Axios, Swagger-UI-Express, Dotenv, Cors, Form-data)
   - Commit & Push ke Git
 
-- [ ] **Checkpoint 2: Token Management Service**
+- [x] **Checkpoint 2: Token Management Service**
   - Implementasi service cerdas untuk auto-fetch & in-memory cache token WSO2
   - Pembaca token SSO dari `.env` (`TOKEN_AUTHx`)
+  - Pengujian berhasil mengambil kedua token BKN
   - Commit & Push ke Git
 
 - [ ] **Checkpoint 3: Core Gateway & Transparent Reverse Proxy**
