@@ -61,6 +61,49 @@ Jika aplikasi daerah (SIMPEG lokal di intranet atau server lain) menembak langsu
 
 ---
 
+## 🏗 Struktur Direktori (Arsitektur Modular ala NestJS)
+
+Aplikasi dibangun dengan pola **Feature-Based Module** (setiap fitur memiliki folder mandiri yang memuat `controller` dan `routes`):
+
+```text
+src/
+├── config/
+│   └── bkn.config.js          # Konfigurasi environment & URL BKN
+├── services/
+│   └── tokenService.js        # Service token WSO2 OAuth2 & SSO BKN
+├── helpers/
+│   ├── bknClient.js           # HTTP Client terpusat (auto-inject token & streaming)
+│   └── responseHandler.js     # Helper format respon standar
+├── modules/                   # <--- MODUL FITUR MANDIRI
+│   ├── pns/                   # Modul PNS & 26 Riwayat (controller + routes)
+│   ├── jabatan/               # Modul Jabatan
+│   ├── skp/                   # Modul SKP, SKP 2022, & Kinerja Periodik
+│   ├── angkakredit/           # Modul Angka Kredit
+│   ├── cpns/                  # Modul CPNS & Pengadaan
+│   ├── diklat/                # Modul Diklat & Kursus
+│   ├── hukdis/                # Modul Hukuman Disiplin
+│   ├── kgb/                   # Modul KGB & Masa Kerja
+│   ├── pensiun/               # Modul Pensiun
+│   ├── kp/                    # Modul Kenaikan Pangkat
+│   ├── keluarga/              # Modul Pasangan & Anak
+│   ├── kompetensi/            # Modul Kompetensi & Potensi
+│   ├── penghargaan/           # Modul Penghargaan
+│   ├── sertifikasi/           # Modul Sertifikasi
+│   ├── tubel/                 # Modul Tugas Belajar
+│   ├── talenta/               # Modul Talent Mapping & Gelar
+│   ├── nonasn/                # Modul Non-ASN & IDIS
+│   ├── referensi/             # Modul Referensi Unor
+│   ├── dokumen/               # Modul Upload Berkas & Streaming Download
+│   └── dashboard/             # Modul Dashboard Aktivitas
+├── routes/
+│   └── index.js               # Router Aggregator utama
+├── docs/
+│   └── swagger.json           # Spesifikasi OpenAPI 3.0
+└── server.js                  # Entry point Express Server
+```
+
+---
+
 ## 🔑 Mekanisme Otentikasi Dual-Token
 
 Setiap request ke Web Service SI-ASN BKN memerlukan dua header otentikasi sekaligus:

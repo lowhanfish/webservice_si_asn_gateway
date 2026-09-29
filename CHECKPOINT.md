@@ -51,3 +51,11 @@ Dokumen ini mencatat status, arsitektur, dan checkpoint pengembangan proyek `web
   - Pengujian server lokal dan verifikasi tampilan Swagger UI (Status 200 OK)
   - Pembuatan README.md lengkap dengan panduan instalasi dan penggunaan
   - Commit & Push akhir ke repository Git
+
+- [x] **Checkpoint 6: Refactoring Arsitektur Modular ala NestJS (Feature-Based Modules)**
+  - Pemisahan kode menjadi feature modules mandiri di `src/modules/<feature>/` (pns, jabatan, skp, angkakredit, cpns, diklat, hukdis, kgb, keluarga, kompetensi, penghargaan, sertifikasi, tubel, talenta, nonasn, referensi, dokumen, dashboard)
+  - Masing-masing modul memiliki `controller` dan `routes` tersendiri
+  - Pembuatan helper terpusat `src/helpers/bknClient.js` untuk request ke BKN (auto-inject token & streaming)
+  - Pembuatan router aggregator di `src/routes/index.js`
+  - Struktur kode rapi, manusiawi, mudah dipelihara, dan skalabel
+  - Commit & Push ke Git

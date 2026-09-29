@@ -2,21 +2,23 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const swaggerUi = require('swagger-ui-express');
 const config = require('./config/bkn.config');
 const tokenService = require('./services/tokenService');
-const bknProxyHandler = require('./middlewares/bknProxy');
+const apiRoutes = require('./routes');
+const swaggerDocument = require('./docs/swagger.json');
 
 const app = express();
 
-// Middleware Umum
+// Middleware Global
 app.use(cors());
 app.use(morgan('dev'));
 
-// Body Parser untuk JSON & URL-Encoded (multipart/form-data dilewatkan sebagai stream)
+// Body Parser untuk JSON & URL-Encoded (multipart dilewatkan langsung sebagai stream)
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Health Check & Info Gateway
+// Health Check Gateway
 app.get('/health', async (req, res) => {
   try {
     const wso2 = await tokenService.getWso2Token();
@@ -39,7 +41,7 @@ app.get('/health', async (req, res) => {
   }
 });
 
-// Root route - redirect or info
+// Root Gateway Info
 app.get('/', (req, res) => {
   res.json({
     name: 'Webservice SI-ASN Gateway',
@@ -49,27 +51,26 @@ app.get('/', (req, res) => {
   });
 });
 
-// Swagger Docs (Placeholder, akan dimuat di Checkpoint 4)
-try {
-  const swaggerUi = require('swagger-ui-express');
-  const swaggerDocument = require('./docs/swagger.json');
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-  app.use('/docs', (req, res) => res.redirect('/api-docs'));
-} catch (e) {
-  // Jika file swagger belum dibuat, tampilkan notifikasi sederhana
-  app.get('/api-docs', (req, res) => {
-    res.send('Swagger Docs sedang disiapkan pada Checkpoint 4.');
-  });
-}
+// Swagger UI Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/docs', (req, res) => res.redirect('/api-docs'));
 
-// Proxy Endpoint ke BKN SIASN
-// Mendukung request melalui:
-// 1. /apisiasn/1.0/... (sama persis dengan URL BKN asli)
-// 2. /api/... (alias yang lebih ringkas)
-app.use('/apisiasn/1.0', bknProxyHandler);
-app.use('/api', bknProxyHandler);
+// Pendaftaran Modular Routes (NestJS style)
+app.use('/apisiasn/1.0', apiRoutes);
+app.use('/api', apiRoutes);
 
-// Start Server jika dipanggil langsung
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('[SERVER ERROR]', err);
+  if (!res.headersSent) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Terjadi kesalahan internal pada gateway'
+    });
+  }
+});
+
+// Start Server
 if (require.main === module) {
   app.listen(config.port, () => {
     console.log(`==================================================`);
