@@ -156,7 +156,7 @@ npm start
 
 | Variabel | Tipe | Contoh / Keterangan |
 |---|---|---|
-| `PORT` | Integer | `3000` (Port gateway berjalan) |
+| `PORT` | Integer | `3005` (Port gateway berjalan) |
 | `NODE_ENV` | String | `development` atau `production` |
 | `BKN_BASE_URL` | URL | `https://apimws.bkn.go.id:8243/apisiasn/1.0` |
 | `BKN_OAUTH2_URL` | URL | `https://apimws.bkn.go.id/oauth2/token` |
@@ -176,7 +176,7 @@ Aplikasi klien (SIMPEG / E-Kinerja) dapat memanggil gateway menggunakan prefix:
 ### 1. Mengakses Swagger UI
 Buka browser dan akses:
 ```text
-http://localhost:3000/api-docs
+http://localhost:3005/api-docs
 ```
 Gunakan antarmuka ini untuk melihat daftar parameter, query, dan bentuk JSON yang diharapkan.
 
@@ -186,20 +186,20 @@ Gunakan antarmuka ini untuk melihat daftar parameter, query, dan bentuk JSON yan
 
 **cURL:**
 ```bash
-curl -X GET "http://localhost:3000/apisiasn/1.0/pns/data-utama/198309222014101001" \
+curl -X GET "http://localhost:3005/apisiasn/1.0/pns/data-utama/198309222014101001" \
      -H "Accept: application/json"
 ```
 
 **JavaScript (Fetch):**
 ```javascript
-const response = await fetch('http://localhost:3000/apisiasn/1.0/pns/rw-jabatan/198309222014101001');
+const response = await fetch('http://localhost:3005/apisiasn/1.0/pns/rw-jabatan/198309222014101001');
 const result = await response.json();
 console.log(result.data);
 ```
 
 **PHP (cURL):**
 ```php
-$ch = curl_init('http://localhost:3000/apisiasn/1.0/pns/data-utama/198309222014101001');
+$ch = curl_init('http://localhost:3005/apisiasn/1.0/pns/data-utama/198309222014101001');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 curl_close($ch);
@@ -216,7 +216,7 @@ Contoh menyimpan riwayat kursus baru:
 
 **cURL:**
 ```bash
-curl -X POST "http://localhost:3000/apisiasn/1.0/kursus/save" \
+curl -X POST "http://localhost:3005/apisiasn/1.0/kursus/save" \
      -H "Content-Type: application/json" \
      -d '{
        "pnsOrangId": "F3C9EE2AA9110064E040640A02025755",
@@ -240,7 +240,7 @@ Untuk mengunggah berkas SK atau sertifikat:
 
 **cURL:**
 ```bash
-curl -X POST "http://localhost:3000/apisiasn/1.0/upload-dok-rw" \
+curl -X POST "http://localhost:3005/apisiasn/1.0/upload-dok-rw" \
      -F "id_riwayat=8ae483a5..." \
      -F "id_ref_dokumen=872" \
      -F "file=@/path/to/sk_jabatan.pdf"
@@ -254,7 +254,7 @@ Path file didapatkan dari atribut `path` pada response data riwayat PNS (misal: 
 
 **cURL:**
 ```bash
-curl -X GET "http://localhost:3000/apisiasn/1.0/download-dok?filePath=dms/F3C9EE2AA9110064E040640A02025755/xxx.pdf" \
+curl -X GET "http://localhost:3005/apisiasn/1.0/download-dok?filePath=dms/F3C9EE2AA9110064E040640A02025755/xxx.pdf" \
      --output "dokumen_sk.pdf"
 ```
 
@@ -299,4 +299,4 @@ Gateway meneruskan respon status HTTP dari server BKN secara utuh:
 ## 🔒 Catatan Keamanan
 
 1. **JANGAN PERNAH** mem-push file `.env` ke Git. File [`.gitignore`](.gitignore) sudah diatur untuk mengabaikan file `.env`.
-2. Jika gateway ini dipasang pada server publik, pastikan port aplikasi (default: `3000`) dilindungi dengan firewall sehingga hanya bisa diakses oleh IP server SIMPEG internal Anda, atau pasang reverse proxy Nginx dengan API Key lokal / Basic Auth.
+2. Jika gateway ini dipasang pada server publik, pastikan port aplikasi (default: `3005`) dilindungi dengan firewall sehingga hanya bisa diakses oleh IP server SIMPEG internal Anda, atau pasang reverse proxy Nginx dengan API Key lokal / Basic Auth.
