@@ -43,6 +43,7 @@ Gateway ini bertindak sebagai **Reverse Proxy** yang mengurus autentikasi Dual-T
     { name: 'Tugas Belajar', description: 'Pencatatan riwayat izin / tugas belajar' },
     { name: 'Pencantuman Gelar & Talenta', description: 'Usulan pencantuman gelar profesi dan Talent Mapping' },
     { name: 'Non ASN & IDIS', description: 'Data Non-ASN dan pelaporan disiplin pada sistem IDIS BKN' },
+    { name: 'I-Mut', description: 'Layanan Usulan Mutasi Pegawai (I-Mut SIASN)' },
     { name: 'Referensi', description: 'Data referensi BKN seperti unit organisasi (unor) dan lembaga' },
     { name: 'Dokumen & Unggah Berkas', description: 'Upload dokumen riwayat, SK, foto profil, dan download dokumen' },
     { name: 'Dashboard', description: 'Aktivitas harian internal SIASN' }
@@ -147,6 +148,8 @@ function addPostMultipart(pathUrl, tag, summary, properties = {}, requiredProps 
 const nipParam = [{ name: 'nipBaru', in: 'path', description: 'NIP Pegawai (18 digit)' }];
 
 addGet('/pns/data-utama/{nipBaru}', 'Data Utama & Riwayat PNS', 'Get Data Utama PNS Lengkap', nipParam);
+addGet('/pns/data-anak/{nipBaru}', 'Data Utama & Riwayat PNS', 'Get Data Anak PNS by NIP', nipParam);
+addGet('/pns/data-pasangan/{nipBaru}', 'Data Utama & Riwayat PNS', 'Get Data Pasangan PNS by NIP', nipParam);
 addGet('/pns/rw-jabatan/{nipBaru}', 'Data Utama & Riwayat PNS', 'Get Riwayat Jabatan PNS', nipParam);
 addGet('/pns/rw-golongan/{nipBaru}', 'Data Utama & Riwayat PNS', 'Get Riwayat Golongan / Pangkat PNS', nipParam);
 addGet('/pns/rw-pendidikan/{nipBaru}', 'Data Utama & Riwayat PNS', 'Get Riwayat Pendidikan PNS', nipParam);
@@ -608,6 +611,13 @@ addGet('/idis/usulan-pelaporan-detail', 'Non ASN & IDIS', 'Get Usulan Pelaporan 
   { name: 'order_dir', in: 'query' }
 ]);
 addGet('/idis/usulan-pelaporan', 'Non ASN & IDIS', 'Get List Usulan Pelaporan IDIS');
+
+// 18. I-MUT (INSTANSI MUTASI)
+addGet('/imut/simpeg/usulan/list', 'I-Mut', 'Get List Usulan Mutasi Pegawai (I-Mut)', [
+  { name: 'no_surat_usulan', in: 'query', description: 'Filter berdasarkan nomor surat usulan', required: false },
+  { name: 'limit', in: 'query', type: 'integer', description: 'Jumlah data per halaman (default: 10)', required: false },
+  { name: 'offset', in: 'query', type: 'integer', description: 'Offset untuk paginasi (default: 0)', required: false }
+]);
 
 // 18. REFERENSI
 addGet('/referensi/ref-unor', 'Referensi', 'Get Daftar Referensi Unor (Unit Organisasi)', [

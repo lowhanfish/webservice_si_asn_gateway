@@ -5,6 +5,14 @@ class PnsController {
     return bknClient.forward(req, res, `/pns/data-utama/${req.params.nipBaru}`);
   }
 
+  async getDataAnak(req, res) {
+    return bknClient.forward(req, res, `/pns/data-anak/${req.params.nipBaru}`);
+  }
+
+  async getDataPasangan(req, res) {
+    return bknClient.forward(req, res, `/pns/data-pasangan/${req.params.nipBaru}`);
+  }
+
   async getRwJabatan(req, res) {
     return bknClient.forward(req, res, `/pns/rw-jabatan/${req.params.nipBaru}`);
   }

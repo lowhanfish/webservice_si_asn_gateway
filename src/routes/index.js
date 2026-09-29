@@ -25,6 +25,7 @@ const tmRoutes = require('../modules/talenta/tm.routes');
 const nonasnRoutes = require('../modules/nonasn/nonasn.routes');
 const idisRoutes = require('../modules/nonasn/idis.routes');
 const referensiRoutes = require('../modules/referensi/referensi.routes');
+const imutRoutes = require('../modules/imut/imut.routes');
 const dokumenRoutes = require('../modules/dokumen/dokumen.routes');
 const dashboardRoutes = require('../modules/dashboard/dashboard.routes');
 
@@ -51,6 +52,7 @@ router.use('/tm', tmRoutes);
 router.use('/nonasn', nonasnRoutes);
 router.use('/idis', idisRoutes);
 router.use('/referensi', referensiRoutes);
+router.use('/imut', imutRoutes);
 router.use('/dashboard', dashboardRoutes);
 
 // Dokumen & Berkas (root level: /download-dok, /upload-dok, dsb.)

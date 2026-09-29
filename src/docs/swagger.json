@@ -85,6 +85,10 @@
       "description": "Data Non-ASN dan pelaporan disiplin pada sistem IDIS BKN"
     },
     {
+      "name": "I-Mut",
+      "description": "Layanan Usulan Mutasi Pegawai (I-Mut SIASN)"
+    },
+    {
       "name": "Referensi",
       "description": "Data referensi BKN seperti unit organisasi (unor) dan lembaga"
     },
@@ -104,6 +108,72 @@
           "Data Utama & Riwayat PNS"
         ],
         "summary": "Get Data Utama PNS Lengkap",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/data-anak/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Data Anak PNS by NIP",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/data-pasangan/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Data Pasangan PNS by NIP",
         "parameters": [
           {
             "name": "nipBaru",
@@ -3205,6 +3275,57 @@
         ],
         "summary": "Get List Usulan Pelaporan IDIS",
         "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/imut/simpeg/usulan/list": {
+      "get": {
+        "tags": [
+          "I-Mut"
+        ],
+        "summary": "Get List Usulan Mutasi Pegawai (I-Mut)",
+        "parameters": [
+          {
+            "name": "no_surat_usulan",
+            "in": "query",
+            "required": false,
+            "description": "Filter berdasarkan nomor surat usulan",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Jumlah data per halaman (default: 10)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Offset untuk paginasi (default: 0)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Berhasil menerima respon dari BKN SIASN"

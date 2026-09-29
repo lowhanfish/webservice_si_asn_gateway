@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const pnsCtrl = require('./pns.controller');
 
-// Data Utama
+// Data Utama & Keluarga
 router.get('/data-utama/:nipBaru', pnsCtrl.getDataUtama);
+router.get('/data-anak/:nipBaru', pnsCtrl.getDataAnak);
+router.get('/data-pasangan/:nipBaru', pnsCtrl.getDataPasangan);
 
 // Riwayat Kepegawaian (GET /pns/rw-...)
 router.get('/rw-jabatan/:nipBaru', pnsCtrl.getRwJabatan);
