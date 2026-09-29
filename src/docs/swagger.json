@@ -1,0 +1,3583 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Webservice SI-ASN BKN Gateway API",
+    "version": "1.0.0",
+    "description": "### Dokumentasi Gateway Integrasi Web Service SI-ASN BKN (SIASNAPI-SIMPEG)\nGateway ini bertindak sebagai **Reverse Proxy** yang mengurus autentikasi Dual-Token BKN (WSO2 OAuth2 & SSO) secara transparan.\n\n**Panduan Penggunaan untuk Pengembang Aplikasi Daerah:**\n1. Semua request dikirim ke Gateway ini tanpa perlu pusing menyisipkan token BKN.\n2. Gateway otomatis menambahkan header `Authorization: Bearer <wso2_token>` dan `Auth: Bearer <sso_token>`.\n3. URL dasar gateway dapat dipanggil menggunakan prefix `/apisiasn/1.0` atau `/api`.\n4. Untuk unduh berkas gunakan endpoint `/download-dok?filePath=...` yang akan langsung mengalirkan file PDF dari BKN."
+  },
+  "servers": [
+    {
+      "url": "/apisiasn/1.0",
+      "description": "Default Proxy Gateway (/apisiasn/1.0)"
+    },
+    {
+      "url": "/api",
+      "description": "Shorthand Proxy Gateway (/api)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Data Utama & Riwayat PNS",
+      "description": "Pengambilan data utama dan berbagai riwayat kepegawaian PNS berdasar NIP"
+    },
+    {
+      "name": "Jabatan",
+      "description": "Manajemen riwayat jabatan struktural / fungsional"
+    },
+    {
+      "name": "Kinerja & SKP",
+      "description": "Pengelolaan SKP 2021, SKP 2022, dan Kinerja Periodik"
+    },
+    {
+      "name": "Angka Kredit",
+      "description": "Pengelolaan data riwayat penetapan angka kredit (PAK)"
+    },
+    {
+      "name": "CPNS & Pengadaan",
+      "description": "Data pengadaan CPNS / penetapan NIP"
+    },
+    {
+      "name": "Diklat & Kursus",
+      "description": "Riwayat diklat struktural, fungsional, teknis, dan kursus"
+    },
+    {
+      "name": "Hukuman Disiplin",
+      "description": "Pencatatan dan riwayat hukuman disiplin PNS"
+    },
+    {
+      "name": "KGB & Masa Kerja",
+      "description": "Riwayat kenaikan gaji berkala dan masa kerja"
+    },
+    {
+      "name": "Pemberhentian & Pensiun",
+      "description": "Daftar usulan pensiun dan pemberhentian PNS"
+    },
+    {
+      "name": "Kenaikan Pangkat (KP)",
+      "description": "Pengecekan usulan kenaikan pangkat PNS"
+    },
+    {
+      "name": "Keluarga",
+      "description": "Pencatatan data keluarga PNS (pasangan dan anak)"
+    },
+    {
+      "name": "Kompetensi & Potensi",
+      "description": "Data hasil asesmen kompetensi dan pemetaan potensi"
+    },
+    {
+      "name": "Penghargaan",
+      "description": "Riwayat tanda jasa / penghargaan"
+    },
+    {
+      "name": "Sertifikasi",
+      "description": "Riwayat sertifikasi profesi / keahlian"
+    },
+    {
+      "name": "Tugas Belajar",
+      "description": "Pencatatan riwayat izin / tugas belajar"
+    },
+    {
+      "name": "Pencantuman Gelar & Talenta",
+      "description": "Usulan pencantuman gelar profesi dan Talent Mapping"
+    },
+    {
+      "name": "Non ASN & IDIS",
+      "description": "Data Non-ASN dan pelaporan disiplin pada sistem IDIS BKN"
+    },
+    {
+      "name": "Referensi",
+      "description": "Data referensi BKN seperti unit organisasi (unor) dan lembaga"
+    },
+    {
+      "name": "Dokumen & Unggah Berkas",
+      "description": "Upload dokumen riwayat, SK, foto profil, dan download dokumen"
+    },
+    {
+      "name": "Dashboard",
+      "description": "Aktivitas harian internal SIASN"
+    }
+  ],
+  "paths": {
+    "/pns/data-utama/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Data Utama PNS Lengkap",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-jabatan/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Jabatan PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-golongan/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Golongan / Pangkat PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-pendidikan/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Pendidikan PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-diklat/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Diklat Struktural PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-kursus/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Kursus PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-hukdis/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Hukuman Disiplin PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-skp/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat SKP PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-skp22/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat SKP 2022 PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-kinerjaperiodik/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Kinerja Periodik PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-angkakredit/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Angka Kredit PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-cltn/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Cuti di Luar Tanggungan Negara (CLTN)",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-kontrak/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Kontrak PPPK",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-potensi/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Potensi PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-kompetensi/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Kompetensi PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-dp3/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat DP3 PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-sertifikasi/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Sertifikasi PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-masakerja/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Masa Kerja PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-kgb/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Kenaikan Gaji Berkala (KGB) PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-pemberhentian/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Pemberhentian PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-tubel/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Tugas Belajar (Tubel) PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-penghargaan/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Penghargaan PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-pindahinstansi/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat Pindah Instansi PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-pnsunor/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat PNS Unor",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/rw-pwk/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Riwayat PWK PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/nilaiipasn/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Data Utama & Riwayat PNS"
+        ],
+        "summary": "Get Nilai IP ASN",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/jabatan/id/{idRiwayatJabatan}": {
+      "get": {
+        "tags": [
+          "Jabatan"
+        ],
+        "summary": "Get Detail Riwayat Jabatan by ID",
+        "parameters": [
+          {
+            "name": "idRiwayatJabatan",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatJabatan",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/jabatan/pns/{nipBaru}": {
+      "get": {
+        "tags": [
+          "Jabatan"
+        ],
+        "summary": "Get Data Jabatan PNS",
+        "parameters": [
+          {
+            "name": "nipBaru",
+            "in": "path",
+            "required": true,
+            "description": "NIP Pegawai (18 digit)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/jabatan/save": {
+      "post": {
+        "tags": [
+          "Jabatan"
+        ],
+        "summary": "Simpan / Tambah Riwayat Jabatan",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsId": "string",
+                  "instansiId": "string",
+                  "instansiIndukId": "string",
+                  "satuanKerjaId": "string",
+                  "unorId": "string",
+                  "eselonId": "string",
+                  "jenisJabatan": "1",
+                  "jabatanFungsionalId": "",
+                  "jabatanFungsionalUmumId": "",
+                  "nomorSk": "string",
+                  "tanggalSk": "dd-mm-yyyy",
+                  "tmtJabatan": "dd-mm-yyyy",
+                  "tmtPelantikan": "dd-mm-yyyy"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/jabatan/unorjabatan/save": {
+      "post": {
+        "tags": [
+          "Jabatan"
+        ],
+        "summary": "Simpan Data Unor Jabatan PNS",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsId": "string",
+                  "instansiId": "string",
+                  "satuanKerjaId": "string",
+                  "unorId": "string",
+                  "subJabatanId": "string",
+                  "tmtJabatan": "dd-mm-yyyy"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/jabatan/delete/{idRiwayatJabatan}": {
+      "delete": {
+        "tags": [
+          "Jabatan"
+        ],
+        "summary": "Hapus Riwayat Jabatan",
+        "parameters": [
+          {
+            "name": "idRiwayatJabatan",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatJabatan",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil dihapus dari BKN"
+          },
+          "400": {
+            "description": "Request tidak valid"
+          }
+        }
+      }
+    },
+    "/jabatan/unorjabatan/document/save": {
+      "post": {
+        "tags": [
+          "Jabatan"
+        ],
+        "summary": "Simpan Riwayat Jabatan beserta Dokumen SK",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "ID Riwayat Jabatan (kosongkan jika buat baru)"
+                  },
+                  "pns_id": {
+                    "type": "string",
+                    "description": "ID PNS BKN"
+                  },
+                  "jenis_jabatan": {
+                    "type": "string",
+                    "description": "1=struktural, 2=fungsional, 4=pelaksana"
+                  },
+                  "unor_id": {
+                    "type": "string"
+                  },
+                  "eselon_id": {
+                    "type": "string"
+                  },
+                  "instansi_id": {
+                    "type": "string"
+                  },
+                  "instansi_induk_id": {
+                    "type": "string"
+                  },
+                  "satuan_kerja_id": {
+                    "type": "string"
+                  },
+                  "jabatan_fungsional_id": {
+                    "type": "string"
+                  },
+                  "jabatan_fungsional_umum_id": {
+                    "type": "string"
+                  },
+                  "nomor_sk": {
+                    "type": "string"
+                  },
+                  "tanggal_sk": {
+                    "type": "string",
+                    "description": "dd-mm-yyyy"
+                  },
+                  "tmt_jabatan": {
+                    "type": "string",
+                    "description": "dd-mm-yyyy"
+                  },
+                  "tmt_pelantikan": {
+                    "type": "string",
+                    "description": "dd-mm-yyyy"
+                  },
+                  "dok_sk_jabatan": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File SK Jabatan (PDF)"
+                  },
+                  "dok_surat_pelantikan": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Surat Pelantikan (PDF)"
+                  },
+                  "dok_sk_mutasi": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File SK Mutasi (PDF)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/angkakredit/id/{idRiwayatAngkaKredit}": {
+      "get": {
+        "tags": [
+          "Angka Kredit"
+        ],
+        "summary": "Get Detail Riwayat Angka Kredit by ID",
+        "parameters": [
+          {
+            "name": "idRiwayatAngkaKredit",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatAngkaKredit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/angkakredit/delete/{idRiwayatAngkaKredit}": {
+      "delete": {
+        "tags": [
+          "Angka Kredit"
+        ],
+        "summary": "Hapus Riwayat Angka Kredit",
+        "parameters": [
+          {
+            "name": "idRiwayatAngkaKredit",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatAngkaKredit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil dihapus dari BKN"
+          },
+          "400": {
+            "description": "Request tidak valid"
+          }
+        }
+      }
+    },
+    "/angkakredit/save": {
+      "post": {
+        "tags": [
+          "Angka Kredit"
+        ],
+        "summary": "Simpan Riwayat Angka Kredit",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsId": "string",
+                  "nomorSk": "string",
+                  "tanggalSk": "dd-mm-yyyy",
+                  "bulanMulaiPenilaian": "1",
+                  "tahunMulaiPenilaian": "2023",
+                  "bulanSelesaiPenilaian": "12",
+                  "tahunSelesaiPenilaian": "2023",
+                  "kreditUtamaBaru": "10.500",
+                  "kreditPenunjangBaru": "2.000",
+                  "kreditBaruTotal": "12.500",
+                  "rwJabatanId": "string",
+                  "isAngkaKreditPertama": "0",
+                  "isIntegrasi": "0",
+                  "isKonversi": "0"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/angkakredit/document/save": {
+      "post": {
+        "tags": [
+          "Angka Kredit"
+        ],
+        "summary": "Simpan Riwayat Angka Kredit dengan Dokumen PAK",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "pns_id": {
+                    "type": "string"
+                  },
+                  "nomor_sk": {
+                    "type": "string"
+                  },
+                  "tanggal_sk": {
+                    "type": "string",
+                    "description": "dd-mm-yyyy"
+                  },
+                  "bulan_mulai_penilaian": {
+                    "type": "string"
+                  },
+                  "tahun_mulai_penilaian": {
+                    "type": "string"
+                  },
+                  "bulan_selesai_penilaian": {
+                    "type": "string"
+                  },
+                  "tahun_selesai_penilaian": {
+                    "type": "string"
+                  },
+                  "kredit_utama_baru": {
+                    "type": "string"
+                  },
+                  "kredit_penunjang_baru": {
+                    "type": "string"
+                  },
+                  "kredit_baru_total": {
+                    "type": "string"
+                  },
+                  "rw_jabatan_id": {
+                    "type": "string"
+                  },
+                  "is_angka_kredit_pertama": {
+                    "type": "string"
+                  },
+                  "is_integrasi": {
+                    "type": "string"
+                  },
+                  "is_konversi": {
+                    "type": "string"
+                  },
+                  "dok_pak": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Dokumen PAK (PDF)"
+                  },
+                  "sk_pak": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Dokumen SK PAK (PDF)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/skp/id/{idRiwayatSkp}": {
+      "get": {
+        "tags": [
+          "Kinerja & SKP"
+        ],
+        "summary": "Get Riwayat SKP by ID",
+        "parameters": [
+          {
+            "name": "idRiwayatSkp",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatSkp",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/skp/save": {
+      "post": {
+        "tags": [
+          "Kinerja & SKP"
+        ],
+        "summary": "Simpan Riwayat SKP",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pns": "string",
+                  "tahun": "2021",
+                  "nilaiSkp": "85.5",
+                  "orientasiPelayanan": "85",
+                  "integritas": "85",
+                  "komitmen": "85",
+                  "disiplin": "85",
+                  "kerjasama": "85",
+                  "kepemimpinan": "0",
+                  "jumlah": "425",
+                  "nilairatarata": "85",
+                  "statusPenilai": "1",
+                  "pejabatPenilai": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/skp/2021/save": {
+      "post": {
+        "tags": [
+          "Kinerja & SKP"
+        ],
+        "summary": "Simpan Riwayat SKP Tahun 2021",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pns": "string",
+                  "tahun": 2021,
+                  "nilaiSkp": 85,
+                  "orientasiPelayanan": 85,
+                  "integritas": 85,
+                  "komitmen": 85,
+                  "disiplin": 85,
+                  "kerjasama": 85,
+                  "kepemimpinan": 0,
+                  "inisiatifKerja": 85
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/skp22/id/{idRiwayatSkp22}": {
+      "get": {
+        "tags": [
+          "Kinerja & SKP"
+        ],
+        "summary": "Get Riwayat SKP 2022 by ID",
+        "parameters": [
+          {
+            "name": "idRiwayatSkp22",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatSkp22",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/skp22/save": {
+      "post": {
+        "tags": [
+          "Kinerja & SKP"
+        ],
+        "summary": "Simpan Riwayat SKP 2022",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsDinilaiOrang": "string",
+                  "tahun": 2022,
+                  "hasilKinerjaNilai": 1,
+                  "perilakuKerjaNilai": 1,
+                  "kuadranKinerjaNilai": 1,
+                  "penilaiNipNrp": "string",
+                  "penilaiNama": "string",
+                  "penilaiJabatan": "string",
+                  "penilaiGolongan": "string",
+                  "penilaiUnorNama": "string",
+                  "statusPenilai": "ASN"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/skp22/document/save": {
+      "post": {
+        "tags": [
+          "Kinerja & SKP"
+        ],
+        "summary": "Simpan Riwayat SKP 2022 beserta Dokumen Evaluasi",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "pnsDinilaiOrang": {
+                    "type": "string"
+                  },
+                  "tahun": {
+                    "type": "integer"
+                  },
+                  "hasilKinerjaNilai": {
+                    "type": "number"
+                  },
+                  "perilakuKerjaNilai": {
+                    "type": "number"
+                  },
+                  "kuadranKinerjaNilai": {
+                    "type": "number"
+                  },
+                  "penilaiNipNrp": {
+                    "type": "string"
+                  },
+                  "penilaiNama": {
+                    "type": "string"
+                  },
+                  "penilaiUnorNama": {
+                    "type": "string"
+                  },
+                  "penilaiJabatan": {
+                    "type": "string"
+                  },
+                  "penilaiGolongan": {
+                    "type": "string"
+                  },
+                  "statusPenilai": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Dokumen SKP (PDF)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/kinerjaperiodik/delete/{idRiwayatKinerjaPeriodik}": {
+      "delete": {
+        "tags": [
+          "Kinerja & SKP"
+        ],
+        "summary": "Hapus Riwayat Kinerja Periodik",
+        "parameters": [
+          {
+            "name": "idRiwayatKinerjaPeriodik",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatKinerjaPeriodik",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil dihapus dari BKN"
+          },
+          "400": {
+            "description": "Request tidak valid"
+          }
+        }
+      }
+    },
+    "/kinerjaperiodik/save": {
+      "post": {
+        "tags": [
+          "Kinerja & SKP"
+        ],
+        "summary": "Simpan Riwayat Kinerja Periodik",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsDinilaiId": "string",
+                  "tahun": 2024,
+                  "periodikId": "string",
+                  "bulanMulaiPenilaian": 1,
+                  "bulanSelesaiPenilaian": 3,
+                  "hasilKinerjaNilai": 1,
+                  "perilakuKerjaNilai": 1,
+                  "kuadranKinerjaNilai": 1
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/cpns/save": {
+      "post": {
+        "tags": [
+          "CPNS & Pengadaan"
+        ],
+        "summary": "Simpan Data Riwayat CPNS / PNS",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pns_orang_id": "string",
+                  "nomor_sk_cpns": "string",
+                  "tgl_sk_cpns": "dd-mm-yyyy",
+                  "tmt_cpns": "dd-mm-yyyy",
+                  "nomor_sk_pns": "string",
+                  "tgl_sk_pns": "dd-mm-yyyy",
+                  "tmt_pns": "dd-mm-yyyy",
+                  "nomor_sttpl": "string",
+                  "tgl_sttpl": "dd-mm-yyyy",
+                  "nomor_spmt": "string",
+                  "tmt_melaksanakan_tugas": "dd-mm-yyyy"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/cpns/document/save": {
+      "post": {
+        "tags": [
+          "CPNS & Pengadaan"
+        ],
+        "summary": "Simpan Riwayat CPNS dengan Dokumen Berkas",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "pns_orang_id": {
+                    "type": "string"
+                  },
+                  "status_cpns_pns": {
+                    "type": "string"
+                  },
+                  "nomor_sk_cpns": {
+                    "type": "string"
+                  },
+                  "tgl_sk_cpns": {
+                    "type": "string"
+                  },
+                  "nomor_sk_pns": {
+                    "type": "string"
+                  },
+                  "tgl_sk_pns": {
+                    "type": "string"
+                  },
+                  "tmt_pns": {
+                    "type": "string"
+                  },
+                  "nomor_spmt": {
+                    "type": "string"
+                  },
+                  "nomor_sttpl": {
+                    "type": "string"
+                  },
+                  "tgl_sttpl": {
+                    "type": "string"
+                  },
+                  "kartu_pegawai": {
+                    "type": "string"
+                  },
+                  "nomor_dokter_pns": {
+                    "type": "string"
+                  },
+                  "nama_jabatan_angkat_cpns": {
+                    "type": "string"
+                  },
+                  "tmt_melaksanakan_tugas": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Dokumen CPNS/PNS (PDF)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/pengadaan/dokumen-pengadaan": {
+      "get": {
+        "tags": [
+          "CPNS & Pengadaan"
+        ],
+        "summary": "Get Dokumen Pengadaan ASN by Tahun Anggaran",
+        "parameters": [
+          {
+            "name": "tahun",
+            "in": "query",
+            "required": true,
+            "description": "tahun",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pengadaan/list-pengadaan-instansi": {
+      "get": {
+        "tags": [
+          "CPNS & Pengadaan"
+        ],
+        "summary": "Get List Pengadaan Instansi by Tahun",
+        "parameters": [
+          {
+            "name": "tahun",
+            "in": "query",
+            "required": true,
+            "description": "tahun",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "description": "offset",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/diklat/document/save": {
+      "post": {
+        "tags": [
+          "Diklat & Kursus"
+        ],
+        "summary": "Simpan Riwayat Diklat Struktural beserta Sertifikat",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "pns_orang_id": {
+                    "type": "string"
+                  },
+                  "latihan_struktural_id": {
+                    "type": "string"
+                  },
+                  "nomor": {
+                    "type": "string"
+                  },
+                  "tanggal": {
+                    "type": "string",
+                    "description": "dd-mm-yyyy"
+                  },
+                  "tanggal_selesai": {
+                    "type": "string",
+                    "description": "dd-mm-yyyy"
+                  },
+                  "bobot": {
+                    "type": "integer"
+                  },
+                  "jenis_kompetensi": {
+                    "type": "string"
+                  },
+                  "jumlah_jam": {
+                    "type": "integer"
+                  },
+                  "tahun": {
+                    "type": "integer"
+                  },
+                  "institusi_penyelenggara": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Dokumen Sertifikat Diklat (PDF)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/kursus/id/{idRiwayatKursus}": {
+      "get": {
+        "tags": [
+          "Diklat & Kursus"
+        ],
+        "summary": "Get Detail Riwayat Kursus by ID",
+        "parameters": [
+          {
+            "name": "idRiwayatKursus",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatKursus",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/kursus/delete/{idRiwayatKursus}": {
+      "delete": {
+        "tags": [
+          "Diklat & Kursus"
+        ],
+        "summary": "Hapus Riwayat Kursus",
+        "parameters": [
+          {
+            "name": "idRiwayatKursus",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatKursus",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil dihapus dari BKN"
+          },
+          "400": {
+            "description": "Request tidak valid"
+          }
+        }
+      }
+    },
+    "/kursus/save": {
+      "post": {
+        "tags": [
+          "Diklat & Kursus"
+        ],
+        "summary": "Simpan Riwayat Kursus PNS",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsOrangId": "string",
+                  "namaKursus": "string",
+                  "institusiPenyelenggara": "string",
+                  "jenisDiklatId": "string",
+                  "jenisKursusId": "string",
+                  "jumlahJam": 40,
+                  "tahunKursus": 2024,
+                  "tanggalKursus": "dd-mm-yyyy",
+                  "tanggalSelesaiKursus": "dd-mm-yyyy",
+                  "nomorSertipikat": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/kursus/document/save": {
+      "post": {
+        "tags": [
+          "Diklat & Kursus"
+        ],
+        "summary": "Simpan Riwayat Kursus beserta Sertifikat (PDF)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "pns_orang_id": {
+                    "type": "string"
+                  },
+                  "jenis_diklat_id": {
+                    "type": "string"
+                  },
+                  "jenis_kursus_id": {
+                    "type": "string"
+                  },
+                  "instansi_id": {
+                    "type": "string"
+                  },
+                  "nama_kursus": {
+                    "type": "string"
+                  },
+                  "institusi_penyelenggara": {
+                    "type": "string"
+                  },
+                  "jumlah_jam": {
+                    "type": "integer"
+                  },
+                  "tahun_kursus": {
+                    "type": "integer"
+                  },
+                  "tanggal_kursus": {
+                    "type": "string"
+                  },
+                  "tanggal_selesai_kursus": {
+                    "type": "string"
+                  },
+                  "nomor_sertipikat": {
+                    "type": "string"
+                  },
+                  "lokasi_id": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Sertifikat Kursus (PDF)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/hukdis/id/{idRiwayatHukdis}": {
+      "get": {
+        "tags": [
+          "Hukuman Disiplin"
+        ],
+        "summary": "Get Detail Riwayat Hukdis by ID",
+        "parameters": [
+          {
+            "name": "idRiwayatHukdis",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatHukdis",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/hukdis/save": {
+      "post": {
+        "tags": [
+          "Hukuman Disiplin"
+        ],
+        "summary": "Simpan Data Riwayat Hukuman Disiplin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsOrangId": "string",
+                  "hukumanTanggal": "dd-mm-yyyy",
+                  "skNomor": "string",
+                  "skTanggal": "dd-mm-yyyy",
+                  "masaTahun": 1,
+                  "masaBulan": 0,
+                  "akhirHukumTanggal": "dd-mm-yyyy",
+                  "jenisHukumanId": "string",
+                  "jenisTingkatHukumanId": "string",
+                  "alasanHukumanDisiplinId": "string",
+                  "keterangan": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/kgb/save": {
+      "post": {
+        "tags": [
+          "KGB & Masa Kerja"
+        ],
+        "summary": "Simpan Riwayat Kenaikan Gaji Berkala (KGB)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsId": "string",
+                  "gajiBaru": "string",
+                  "gajiLama": "string",
+                  "nomorSk": "string",
+                  "tanggalSk": "dd-mm-yyyy",
+                  "tmtGajiBaru": "dd-mm-yyyy",
+                  "masaKerja": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/kgb/delete/{idRiwayatKgb}": {
+      "delete": {
+        "tags": [
+          "KGB & Masa Kerja"
+        ],
+        "summary": "Hapus Riwayat KGB",
+        "parameters": [
+          {
+            "name": "idRiwayatKgb",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatKgb",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil dihapus dari BKN"
+          },
+          "400": {
+            "description": "Request tidak valid"
+          }
+        }
+      }
+    },
+    "/pns/list-pensiun-instansibynip": {
+      "get": {
+        "tags": [
+          "Pemberhentian & Pensiun"
+        ],
+        "summary": "Get List Usulan Pensiun Berdasarkan NIP",
+        "parameters": [
+          {
+            "name": "nip",
+            "in": "query",
+            "required": true,
+            "description": "NIP Pegawai",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/list-pensiun-instansi": {
+      "get": {
+        "tags": [
+          "Pemberhentian & Pensiun"
+        ],
+        "summary": "Get List Usulan Pensiun Instansi by Rentang Tanggal",
+        "parameters": [
+          {
+            "name": "tglAwal",
+            "in": "query",
+            "required": true,
+            "description": "dd-mm-yyyy",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tglAkhir",
+            "in": "query",
+            "required": true,
+            "description": "dd-mm-yyyy",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/kp-instansi-byId": {
+      "get": {
+        "tags": [
+          "Kenaikan Pangkat (KP)"
+        ],
+        "summary": "Get Status Usulan KP Instansi by ID Usulan",
+        "parameters": [
+          {
+            "name": "idUsulan",
+            "in": "query",
+            "required": true,
+            "description": "ID Usulan KP BKN",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/pns/list-kp-instansi": {
+      "get": {
+        "tags": [
+          "Kenaikan Pangkat (KP)"
+        ],
+        "summary": "Get List Usulan KP Instansi by Periode",
+        "parameters": [
+          {
+            "name": "periode",
+            "in": "query",
+            "required": true,
+            "description": "yyyy-mm-dd",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "description": "offset",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/keluarga/pasangan/save": {
+      "post": {
+        "tags": [
+          "Keluarga"
+        ],
+        "summary": "Simpan Data Riwayat Pasangan (Suami/Istri)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsOrangId": "string",
+                  "nama": "string",
+                  "tempatLahir": "string",
+                  "tglLahir": "dd-mm-yyyy",
+                  "jenisKelamin": "F",
+                  "agamaId": "1",
+                  "statusPernikahan": "1",
+                  "tglAktaMenikah": "dd-mm-yyyy",
+                  "noAktaMenikah": "string",
+                  "statusHidup": "1"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/keluarga/anak/save": {
+      "post": {
+        "tags": [
+          "Keluarga"
+        ],
+        "summary": "Simpan Data Riwayat Anak PNS",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsOrangId": "string",
+                  "pasanganId": "string",
+                  "nama": "string",
+                  "tempatLahir": "string",
+                  "tglLahir": "dd-mm-yyyy",
+                  "jenisKelamin": "M",
+                  "jenisAnakId": "1",
+                  "statusHidup": "1",
+                  "aktaKelahiran": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/kompetensi/refkegiatan": {
+      "get": {
+        "tags": [
+          "Kompetensi & Potensi"
+        ],
+        "summary": "Get List Referensi Kegiatan Penkom",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "description": "offset",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/kompetensi/refinstitusipenkom": {
+      "get": {
+        "tags": [
+          "Kompetensi & Potensi"
+        ],
+        "summary": "Get List Institusi Penkom",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "description": "offset",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/kompetensi/refkegiataninstansi/save": {
+      "post": {
+        "tags": [
+          "Kompetensi & Potensi"
+        ],
+        "summary": "Simpan Kegiatan Penkom Instansi",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "instansiId": "string",
+                  "namaKegiatan": "string",
+                  "tahun": "2024",
+                  "tanggalMulai": "dd-mm-yyyy",
+                  "tanggalSelesai": "dd-mm-yyyy"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/kompetensi/potensi/save": {
+      "post": {
+        "tags": [
+          "Kompetensi & Potensi"
+        ],
+        "summary": "Simpan Data Riwayat Potensi Asesmen",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "pnsOrangId": "string",
+                  "berfikirKritis": "string",
+                  "intelektual": "string",
+                  "interpersonal": "string",
+                  "kesadaranDiri": "string",
+                  "motivasiKomitmen": "string",
+                  "total": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/kompetensi/kompetensi/save": {
+      "post": {
+        "tags": [
+          "Kompetensi & Potensi"
+        ],
+        "summary": "Simpan Data Riwayat Kompetensi Asesmen",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "pnsId": "string",
+                  "integritas": "string",
+                  "kerjasama": "string",
+                  "komunikasi": "string",
+                  "orientasiPadaHasil": "string",
+                  "pelayananPublik": "string",
+                  "pengembanganDiriDanOrla": "string",
+                  "mengelolaPerubahan": "string",
+                  "pengambilanKeputusan": "string",
+                  "perekatBangsa": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/penghargaan/id/{idRiwayatPenghargaan}": {
+      "get": {
+        "tags": [
+          "Penghargaan"
+        ],
+        "summary": "Get Detail Riwayat Penghargaan by ID",
+        "parameters": [
+          {
+            "name": "idRiwayatPenghargaan",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatPenghargaan",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/penghargaan/delete/{idRiwayatPenghargaan}": {
+      "delete": {
+        "tags": [
+          "Penghargaan"
+        ],
+        "summary": "Hapus Riwayat Penghargaan",
+        "parameters": [
+          {
+            "name": "idRiwayatPenghargaan",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatPenghargaan",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil dihapus dari BKN"
+          },
+          "400": {
+            "description": "Request tidak valid"
+          }
+        }
+      }
+    },
+    "/penghargaan/save": {
+      "post": {
+        "tags": [
+          "Penghargaan"
+        ],
+        "summary": "Simpan Riwayat Penghargaan",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsOrangId": "string",
+                  "hargaId": "string",
+                  "tahun": 2024,
+                  "skNomor": "string",
+                  "skDate": "dd-mm-yyyy"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/penghargaan/document/save": {
+      "post": {
+        "tags": [
+          "Penghargaan"
+        ],
+        "summary": "Simpan Riwayat Penghargaan beserta Dokumen Sertifikat",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "pns_orang_id": {
+                    "type": "string"
+                  },
+                  "harga_id": {
+                    "type": "string"
+                  },
+                  "tahun": {
+                    "type": "integer"
+                  },
+                  "sk_nomor": {
+                    "type": "string"
+                  },
+                  "sk_date": {
+                    "type": "string"
+                  },
+                  "skala_harga": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Sertifikat Penghargaan (PDF)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/sertifikasi/save": {
+      "post": {
+        "tags": [
+          "Sertifikasi"
+        ],
+        "summary": "Simpan Riwayat Sertifikasi Pegawai",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsOrangId": "string",
+                  "namaSertifikasi": "string",
+                  "nomorSertifikat": "string",
+                  "tanggalSertifikat": "dd-mm-yyyy",
+                  "masaBerlakuSertMulai": "dd-mm-yyyy",
+                  "masaBerlakuSertSelesai": "dd-mm-yyyy"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/sertifikasi/delete/{idRiwayatSertifikasi}": {
+      "delete": {
+        "tags": [
+          "Sertifikasi"
+        ],
+        "summary": "Hapus Riwayat Sertifikasi",
+        "parameters": [
+          {
+            "name": "idRiwayatSertifikasi",
+            "in": "path",
+            "required": true,
+            "description": "idRiwayatSertifikasi",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil dihapus dari BKN"
+          },
+          "400": {
+            "description": "Request tidak valid"
+          }
+        }
+      }
+    },
+    "/tubel/save": {
+      "post": {
+        "tags": [
+          "Tugas Belajar"
+        ],
+        "summary": "Simpan Riwayat Tugas Belajar Pegawai",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "",
+                  "pnsOrangId": "string",
+                  "namaSekolah": "string",
+                  "pendidikanId": "string",
+                  "tglMulai": "dd-mm-yyyy",
+                  "tglSelesai": "dd-mm-yyyy"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/partition/profesi-instansi": {
+      "get": {
+        "tags": [
+          "Pencantuman Gelar & Talenta"
+        ],
+        "summary": "Get Usulan Pencantuman Gelar Profesi by NIP",
+        "parameters": [
+          {
+            "name": "nip",
+            "in": "query",
+            "required": true,
+            "description": "nip",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/partition/list-pg-instansi": {
+      "get": {
+        "tags": [
+          "Pencantuman Gelar & Talenta"
+        ],
+        "summary": "Get List Pencantuman Gelar ASN by NIP",
+        "parameters": [
+          {
+            "name": "nip",
+            "in": "query",
+            "required": true,
+            "description": "nip",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/tm/talentmapping-save": {
+      "post": {
+        "tags": [
+          "Pencantuman Gelar & Talenta"
+        ],
+        "summary": "Simpan Data Talent Mapping ASN",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "pns_id": "string",
+                  "box": "string",
+                  "sumbu_x": "string",
+                  "sumbu_y": "string",
+                  "total_sumbu": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/tm/detail-nilai-sumbu-tm": {
+      "get": {
+        "tags": [
+          "Pencantuman Gelar & Talenta"
+        ],
+        "summary": "Get Detail Nilai Sumbu Talent Mapping",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/nonasn/data/{nik}": {
+      "get": {
+        "tags": [
+          "Non ASN & IDIS"
+        ],
+        "summary": "Get Data JPT Non ASN by NIK",
+        "parameters": [
+          {
+            "name": "nik",
+            "in": "path",
+            "required": true,
+            "description": "nik",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/idis/usulan-pelaporan-detail": {
+      "get": {
+        "tags": [
+          "Non ASN & IDIS"
+        ],
+        "summary": "Get Usulan Pelaporan Detail IDIS",
+        "parameters": [
+          {
+            "name": "status_usulan",
+            "in": "query",
+            "required": true,
+            "description": "status_usulan",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "limit",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "description": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "required": true,
+            "description": "order_by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order_dir",
+            "in": "query",
+            "required": true,
+            "description": "order_dir",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/idis/usulan-pelaporan": {
+      "get": {
+        "tags": [
+          "Non ASN & IDIS"
+        ],
+        "summary": "Get List Usulan Pelaporan IDIS",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/referensi/ref-unor": {
+      "get": {
+        "tags": [
+          "Referensi"
+        ],
+        "summary": "Get Daftar Referensi Unor (Unit Organisasi)",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "description": "offset",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/download-dok": {
+      "get": {
+        "tags": [
+          "Dokumen & Unggah Berkas"
+        ],
+        "summary": "Unduh Dokumen Berkas dari BKN (Format PDF Streaming)",
+        "parameters": [
+          {
+            "name": "filePath",
+            "in": "query",
+            "required": true,
+            "description": "Path file dokumen di BKN (misal: dms/... atau peremajaan/usulan/...)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/upload-photo": {
+      "post": {
+        "tags": [
+          "Dokumen & Unggah Berkas"
+        ],
+        "summary": "Upload Pas Foto Pegawai",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pns_id",
+                  "file"
+                ],
+                "properties": {
+                  "pns_id": {
+                    "type": "string",
+                    "description": "ID PNS di SIASN BKN"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Foto Pegawai (JPG/PNG)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/upload-dok": {
+      "post": {
+        "tags": [
+          "Dokumen & Unggah Berkas"
+        ],
+        "summary": "Upload Dokumen Umum ke BKN",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id_ref_dokumen",
+                  "file"
+                ],
+                "properties": {
+                  "id_ref_dokumen": {
+                    "type": "integer",
+                    "description": "ID Jenis Dokumen (872, 873, 879, 880, 891)"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Dokumen PDF"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/upload-dok-rw": {
+      "post": {
+        "tags": [
+          "Dokumen & Unggah Berkas"
+        ],
+        "summary": "Upload Dokumen Terkait Riwayat Pegawai",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id_riwayat",
+                  "id_ref_dokumen",
+                  "file"
+                ],
+                "properties": {
+                  "id_riwayat": {
+                    "type": "string",
+                    "description": "ID Riwayat yang bersangkutan"
+                  },
+                  "id_ref_dokumen": {
+                    "type": "integer",
+                    "description": "ID Jenis Dokumen"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File Dokumen PDF"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/upload-dok-sk-kp": {
+      "post": {
+        "tags": [
+          "Dokumen & Unggah Berkas"
+        ],
+        "summary": "Upload Dokumen SK Kenaikan Pangkat (KP)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id_usulan",
+                  "no_sk",
+                  "tgl_sk",
+                  "file"
+                ],
+                "properties": {
+                  "id_usulan": {
+                    "type": "string",
+                    "description": "ID Usulan KP"
+                  },
+                  "no_sk": {
+                    "type": "string"
+                  },
+                  "tgl_sk": {
+                    "type": "string",
+                    "description": "dd-mm-yyyy"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File SK KP (PDF)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/upload-dok-sk-nip": {
+      "post": {
+        "tags": [
+          "Dokumen & Unggah Berkas"
+        ],
+        "summary": "Upload Dokumen SK Penetapan NIP",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "no_peserta",
+                  "tahun_formasi",
+                  "no_sk",
+                  "tgl_sk",
+                  "file"
+                ],
+                "properties": {
+                  "no_peserta": {
+                    "type": "string"
+                  },
+                  "tahun_formasi": {
+                    "type": "string"
+                  },
+                  "no_sk": {
+                    "type": "string"
+                  },
+                  "tgl_sk": {
+                    "type": "string"
+                  },
+                  "tgl_ttd_sk": {
+                    "type": "string"
+                  },
+                  "pejabat_ttd_sk": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File SK NIP (PDF)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil mengunggah dokumen ke BKN"
+          }
+        }
+      }
+    },
+    "/dashboard/aktivity/delete/{idAktivitas}": {
+      "delete": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Hapus Aktivitas Harian Internal BKN",
+        "parameters": [
+          {
+            "name": "idAktivitas",
+            "in": "path",
+            "required": true,
+            "description": "idAktivitas",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil dihapus dari BKN"
+          },
+          "400": {
+            "description": "Request tidak valid"
+          }
+        }
+      }
+    },
+    "/dashboard/aktivity/save": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Simpan Aktivitas Resume SIASN",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "kegiatanId": 0,
+                  "pnsId": "string",
+                  "realisasi": 0,
+                  "sesi": 0,
+                  "sistem": "string",
+                  "waktu": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    }
+  }
+}

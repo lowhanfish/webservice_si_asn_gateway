@@ -42,11 +42,12 @@ Dokumen ini mencatat status, arsitektur, dan checkpoint pengembangan proyek `web
   - Pengujian live proxy berhasil mengambil data dari BKN dengan status 200 OK
   - Commit & Push ke Git
 
-- [ ] **Checkpoint 4: Swagger / OpenAPI 3.0 Documentation**
-  - Dokumentasi OpenAPI lengkap berdasarkan spesifikasi BKN (Riwayat, Jabatan, SKP, Kinerja, Diklat, Kursus, Angka Kredit, CPNS, Dokumen/Upload, dsb.)
-  - Integrasi Swagger UI pada endpoint `/api-docs`
+- [x] **Checkpoint 4: Swagger / OpenAPI 3.0 Documentation**
+  - Dokumentasi OpenAPI lengkap berdasarkan spesifikasi BKN (20 Modul, 91 Endpoint)
+  - Integrasi Swagger UI interaktif pada endpoint `/api-docs` (dan redirect dari `/docs`)
   - Commit & Push ke Git
 
-- [ ] **Checkpoint 5: Verifikasi & Finalisasi**
-  - Pengujian server lokal dan verifikasi tampilan Swagger UI
+- [x] **Checkpoint 5: Verifikasi & Finalisasi**
+  - Pengujian server lokal dan verifikasi tampilan Swagger UI (Status 200 OK)
+  - Pembuatan README.md lengkap dengan panduan instalasi dan penggunaan
   - Commit & Push akhir ke repository Git
