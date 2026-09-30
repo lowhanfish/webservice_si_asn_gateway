@@ -17,6 +17,10 @@ Gateway ini bertindak sebagai **Reverse Proxy** yang mengurus autentikasi Dual-T
   },
   servers: [
     {
+      url: '/',
+      description: 'Root Gateway (Auth & Profil)'
+    },
+    {
       url: '/apisiasn/1.0',
       description: 'Default Proxy Gateway (/apisiasn/1.0)'
     },
@@ -26,6 +30,7 @@ Gateway ini bertindak sebagai **Reverse Proxy** yang mengurus autentikasi Dual-T
     }
   ],
   tags: [
+    { name: 'Autentikasi Gateway', description: 'Registrasi, Login HttpOnly Cookie, Refresh Token, dan Riwayat Audit Log Gateway' },
     { name: 'Data Utama & Riwayat PNS', description: 'Pengambilan data utama dan berbagai riwayat kepegawaian PNS berdasar NIP' },
     { name: 'Jabatan', description: 'Manajemen riwayat jabatan struktural / fungsional' },
     { name: 'Kinerja & SKP', description: 'Pengelolaan SKP 2021, SKP 2022, dan Kinerja Periodik' },
@@ -143,6 +148,33 @@ function addPostMultipart(pathUrl, tag, summary, properties = {}, requiredProps 
     }
   };
 }
+
+// 0. AUTENTIKASI GATEWAY (HTTPONLY COOKIE & AUDIT LOG)
+addPostJson('/auth/register', 'Autentikasi Gateway', 'Registrasi Pengguna / Klien Gateway Baru', {
+  name: 'Nama Penanggung Jawab',
+  username: 'simpeg_konsel',
+  email: 'simpeg@konaweselatankab.go.id',
+  password: 'PasswordRahasia123!',
+  appName: 'SIMPEG Konawe Selatan',
+  purpose: 'untuk integrasi simpegda',
+  allowedDomains: 'simpeg.konaweselatankab.go.id'
+});
+
+addPostJson('/auth/login', 'Autentikasi Gateway', 'Login Pengguna (Menyimpan Token di HttpOnly Cookie)', {
+  username: 'simpeg_konsel',
+  password: 'PasswordRahasia123!'
+});
+
+addPostJson('/auth/refresh', 'Autentikasi Gateway', 'Refresh Access Token via HttpOnly Cookie', {});
+
+addPostJson('/auth/logout', 'Autentikasi Gateway', 'Logout & Bersihkan HttpOnly Cookie', {});
+
+addGet('/auth/me', 'Autentikasi Gateway', 'Cek Profil Pengguna yang Sedang Login');
+
+addGet('/auth/logs', 'Autentikasi Gateway', 'Lihat Riwayat Akses API & Domain Pengguna (Audit Trail)', [
+  { name: 'page', in: 'query', type: 'integer', description: 'Nomor halaman (default: 1)', required: false },
+  { name: 'limit', in: 'query', type: 'integer', description: 'Jumlah log per halaman (default: 20)', required: false }
+]);
 
 // 1. DATA UTAMA & RIWAYAT PNS
 const nipParam = [{ name: 'nipBaru', in: 'path', description: 'NIP Pegawai (18 digit)' }];

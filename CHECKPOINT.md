@@ -59,3 +59,14 @@ Dokumen ini mencatat status, arsitektur, dan checkpoint pengembangan proyek `web
   - Pembuatan router aggregator di `src/routes/index.js`
   - Struktur kode rapi, manusiawi, mudah dipelihara, dan skalabel
   - Commit & Push ke Git
+
+- [x] **Checkpoint 7: Keamanan Gateway (MySQL Prisma, HttpOnly Cookie Auth, & Audit Trail Log)**
+  - Konfigurasi Prisma ORM dengan database MySQL `simpeg_gateway`
+  - Model `User` (menyimpan info pemohon, nama aplikasi, dan `purpose` / keperluan integrasi)
+  - Model `RefreshToken` dan `ApiAccessLog` untuk pelacakan riwayat akses
+  - Modul otentikasi lengkap: `POST /auth/register`, `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout`, `GET /auth/me`, `GET /auth/logs`
+  - Penyimpanan JWT Token menggunakan `HttpOnly Cookie` yang aman dari XSS
+  - Middleware `auditLogMiddleware` untuk mencatat endpoint, method, domain/origin pemanggil, IP, status code, dan waktu eksekusi
+  - Middleware `authMiddleware` untuk memproteksi seluruh endpoint gateway BKN
+  - Swagger UI diperbarui dengan 100 endpoint lengkap
+  - Commit & Push ke Git

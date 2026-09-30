@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int            @id @default(autoincrement())
+  name           String         @db.VarChar(100)
+  username       String         @unique @db.VarChar(50)
+  email          String         @unique @db.VarChar(100)
+  password       String         @db.VarChar(255)
+  appName        String         @db.VarChar(100) // Nama aplikasi (misal: "SIMPEG Konawe Selatan")
+  purpose        String         @db.Text        // Keperluan pendaftaran (misal: "untuk integrasi simpegda")
+  allowedDomains String?        @db.VarChar(255) // Domain yang diizinkan (misal: simpeg.konaweselatankab.go.id)
+  apiKey         String         @unique @db.VarChar(100) // API Key alternatif untuk klien server-to-server
+  role           String         @default("CLIENT") // ADMIN / CLIENT
+  status         String         @default("ACTIVE") // ACTIVE / PENDING / SUSPENDED
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  refreshTokens  RefreshToken[]
+  accessLogs     ApiAccessLog[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique @db.VarChar(500)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("refresh_tokens")
+}
+
+model ApiAccessLog {
+  id            Int      @id @default(autoincrement())
+  userId        Int?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  endpoint      String   @db.VarChar(500) // Endpoint yang diakses (/apisiasn/1.0/...)
+  method        String   @db.VarChar(10)  // GET, POST, DELETE
+  domain        String?  @db.VarChar(255) // Origin / Referer domain pemanggil
+  clientIp      String?  @db.VarChar(50)  // IP Address pengakses
+  statusCode    Int                       // Status respon HTTP
+  executionTime Int                       // Waktu eksekusi dalam milidetik (ms)
+  userAgent     String?  @db.Text         // Keterangan klien/browser
+  createdAt     DateTime @default(now())
+
+  @@map("api_access_logs")
+}

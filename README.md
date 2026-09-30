@@ -221,7 +221,62 @@ Buka browser dan akses:
 ```text
 http://localhost:3005/api-docs
 ```
-Gunakan antarmuka ini untuk melihat daftar parameter, query, dan bentuk JSON yang diharapkan.
+Gunakan antarmuka ini untuk melihat daftar parameter, query, dan mencoba endpoint secara interaktif.
+
+---
+
+### 2. Autentikasi Pengguna & HttpOnly Cookie
+
+Gateway ini menerapkan perlindungan akses berbasis **HttpOnly Cookie** dan **API Key**:
+
+#### A. Registrasi Pengguna Baru (`POST /auth/register`)
+Setiap aplikasi pemohon wajib mendaftar dan mencantumkan nama aplikasi serta keperluannya:
+```bash
+curl -X POST "http://localhost:3005/auth/register" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "name": "Operator SIMPEG",
+       "username": "simpeg_konsel",
+       "email": "simpeg@konaweselatankab.go.id",
+       "password": "PasswordKuat123!",
+       "appName": "SIMPEG Konawe Selatan",
+       "purpose": "untuk integrasi simpegda",
+       "allowedDomains": "simpeg.konaweselatankab.go.id"
+     }'
+```
+
+#### B. Login Pengguna (`POST /auth/login`)
+Login akan otomatis menaruh `access_token` dan `refresh_token` ke dalam **HttpOnly Cookie** di browser/klien:
+```bash
+curl -X POST "http://localhost:3005/auth/login" \
+     -H "Content-Type: application/json" \
+     -c cookies.txt \
+     -d '{
+       "username": "simpeg_konsel",
+       "password": "PasswordKuat123!"
+     }'
+```
+
+#### C. Memanggil Endpoint BKN dengan Cookie atau API Key
+- **Menggunakan Cookie:**
+  ```bash
+  curl -X GET "http://localhost:3005/apisiasn/1.0/pns/data-utama/198309222014101001" \
+       -b cookies.txt
+  ```
+- **Menggunakan Header `x-api-key` (Alternatif Server-to-Server):**
+  ```bash
+  curl -X GET "http://localhost:3005/apisiasn/1.0/pns/data-utama/198309222014101001" \
+       -H "x-api-key: gw_xxxxxxxxx"
+  ```
+
+---
+
+### 3. Pemantauan & Riwayat Audit Log (Prisma Studio)
+Anda dapat memantau pengguna terdaftar, keperluan integrasi, serta riwayat akses API dan domain secara visual melalui browser:
+```bash
+npx prisma studio
+```
+Buka browser ke `http://localhost:5555` untuk melihat tabel `users`, `refresh_tokens`, dan `api_access_logs`.
 
 ---
 

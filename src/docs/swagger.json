@@ -7,6 +7,10 @@
   },
   "servers": [
     {
+      "url": "/",
+      "description": "Root Gateway (Auth & Profil)"
+    },
+    {
       "url": "/apisiasn/1.0",
       "description": "Default Proxy Gateway (/apisiasn/1.0)"
     },
@@ -16,6 +20,10 @@
     }
   ],
   "tags": [
+    {
+      "name": "Autentikasi Gateway",
+      "description": "Registrasi, Login HttpOnly Cookie, Refresh Token, dan Riwayat Audit Log Gateway"
+    },
     {
       "name": "Data Utama & Riwayat PNS",
       "description": "Pengambilan data utama dan berbagai riwayat kepegawaian PNS berdasar NIP"
@@ -102,6 +110,194 @@
     }
   ],
   "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Autentikasi Gateway"
+        ],
+        "summary": "Registrasi Pengguna / Klien Gateway Baru",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "Nama Penanggung Jawab",
+                  "username": "simpeg_konsel",
+                  "email": "simpeg@konaweselatankab.go.id",
+                  "password": "PasswordRahasia123!",
+                  "appName": "SIMPEG Konawe Selatan",
+                  "purpose": "untuk integrasi simpegda",
+                  "allowedDomains": "simpeg.konaweselatankab.go.id"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Autentikasi Gateway"
+        ],
+        "summary": "Login Pengguna (Menyimpan Token di HttpOnly Cookie)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "username": "simpeg_konsel",
+                  "password": "PasswordRahasia123!"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Autentikasi Gateway"
+        ],
+        "summary": "Refresh Access Token via HttpOnly Cookie",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Autentikasi Gateway"
+        ],
+        "summary": "Logout & Bersihkan HttpOnly Cookie",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Berhasil diproses oleh BKN"
+          },
+          "400": {
+            "description": "Validasi data gagal"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": [
+          "Autentikasi Gateway"
+        ],
+        "summary": "Cek Profil Pengguna yang Sedang Login",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
+    "/auth/logs": {
+      "get": {
+        "tags": [
+          "Autentikasi Gateway"
+        ],
+        "summary": "Lihat Riwayat Akses API & Domain Pengguna (Audit Trail)",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Nomor halaman (default: 1)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Jumlah log per halaman (default: 20)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil menerima respon dari BKN SIASN"
+          },
+          "400": {
+            "description": "Parameter request tidak valid"
+          },
+          "404": {
+            "description": "Data tidak ditemukan di BKN"
+          },
+          "500": {
+            "description": "Kesalahan internal server BKN"
+          }
+        }
+      }
+    },
     "/pns/data-utama/{nipBaru}": {
       "get": {
         "tags": [
