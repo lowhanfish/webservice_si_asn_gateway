@@ -70,3 +70,9 @@ Dokumen ini mencatat status, arsitektur, dan checkpoint pengembangan proyek `web
   - Middleware `authMiddleware` untuk memproteksi seluruh endpoint gateway BKN
   - Swagger UI diperbarui dengan 100 endpoint lengkap
   - Commit & Push ke Git
+
+- [x] **Checkpoint 8: Seeding Akun Master Admin & Dokumentasi Lengkap**
+  - Pembuatan script database seed `prisma/seed.js` untuk akun master admin (`kikensbatara` : `cocodark`)
+  - Konfigurasi `package.json` dengan script `npm run seed`
+  - Pembaruan `README.md` dengan panduan instalasi Prisma, seeding akun admin, dan contoh login
+  - Commit & Push ke Git

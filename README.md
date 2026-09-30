@@ -8,17 +8,21 @@ Aplikasi ini bertindak sebagai jembatan pada server yang memiliki IP Publik ter-
 
 ## 📑 Daftar Isi
 - [Latar Belakang & Arsitektur](#-latar-belakang--arsitektur)
-- [Mekanisme Otentikasi Dual-Token](#-mekanisme-otentikasi-dual-token)
+- [Struktur Direktori (Modular ala NestJS)](#-struktur-direktori-arsitektur-modular-ala-nestjs)
+- [Mekanisme Otentikasi Dual-Token BKN](#-mekanisme-otentikasi-dual-token)
 - [Fitur Utama Gateway](#-fitur-utama-gateway)
-- [Katalog Modul & Endpoint](#-katalog-modul--endpoint)
+- [Katalog Modul & Endpoint (22 Tag, 100 Endpoint)](#-katalog-modul--endpoint)
 - [Panduan Instalasi & Menjalankan](#-panduan-instalasi--menjalankan)
 - [Konfigurasi Environment (.env)](#-konfigurasi-environment-env)
+- [Akun Master Admin & Seeding](#-akun-master-admin-bawaan)
 - [Panduan Integrasi Aplikasi Klien](#-panduan-integrasi-aplikasi-klien)
   - [1. Mengakses Swagger UI](#1-mengakses-swagger-ui)
-  - [2. Contoh Request GET (Data Riwayat)](#2-contoh-request-get-data-riwayat)
-  - [3. Contoh Request POST (Kirim Data JSON)](#3-contoh-request-post-kirim-data-json)
-  - [4. Contoh Upload Dokumen (Multipart/Form-Data)](#4-contoh-upload-dokumen-multipartform-data)
-  - [5. Contoh Download Dokumen Berkas (PDF)](#5-contoh-download-dokumen-berkas-pdf)
+  - [2. Autentikasi Pengguna & HttpOnly Cookie](#2-autentikasi-pengguna--httponly-cookie)
+  - [3. Pemantauan & Riwayat Audit Log (Prisma Studio)](#3-pemantauan--riwayat-audit-log-prisma-studio)
+  - [4. Contoh Request GET (Data Riwayat)](#4-contoh-request-get-data-riwayat)
+  - [5. Contoh Request POST (Kirim Data JSON)](#5-contoh-request-post-kirim-data-json)
+  - [6. Contoh Upload Dokumen (Multipart/Form-Data)](#6-contoh-upload-dokumen-multipartform-data)
+  - [7. Contoh Download Dokumen Berkas (PDF)](#7-contoh-download-dokumen-berkas-pdf)
 - [Menjalankan di Server Produksi (PM2)](#-menjalankan-di-server-produksi-pm2)
 - [Status Code & Penanganan Error](#-status-code--penanganan-error)
 - [Catatan Keamanan](#-catatan-keamanan)
@@ -180,9 +184,16 @@ Salin template konfigurasi:
 ```bash
 cp .env.example .env
 ```
-Buka file `.env` dan isi kredensial yang sesuai.
+Buka file `.env` dan sesuaikan kredensial BKN serta URL database MySQL (`DATABASE_URL`).
 
-### 4. Jalankan Aplikasi
+### 4. Sinkronisasi Database & Seed Akun Admin
+Sinkronisasikan struktur tabel ke database MySQL `simpeg_gateway` dan daftarkan akun master admin bawaan:
+```bash
+npx prisma db push
+npm run seed
+```
+
+### 5. Jalankan Aplikasi
 Mode Pengembangan (dengan auto-reload):
 ```bash
 npm run dev
@@ -201,12 +212,37 @@ npm start
 |---|---|---|
 | `PORT` | Integer | `3005` (Port gateway berjalan) |
 | `NODE_ENV` | String | `development` atau `production` |
+| `DATABASE_URL` | String | `mysql://root:root@localhost:3306/simpeg_gateway` |
+| `JWT_ACCESS_SECRET` | String | Kunci rahasia JWT Access Token |
+| `JWT_REFRESH_SECRET` | String | Kunci rahasia JWT Refresh Token |
 | `BKN_BASE_URL` | URL | `https://apimws.bkn.go.id:8243/apisiasn/1.0` |
 | `BKN_OAUTH2_URL` | URL | `https://apimws.bkn.go.id/oauth2/token` |
 | `BKN_CONSUMER_KEY` | String | Consumer Key aplikasi dari API Manager BKN |
 | `BKN_CONSUMER_SECRET` | String | Consumer Secret aplikasi dari API Manager BKN |
 | `TOKEN_AUTHx` | String | Token JWT SSO SIASN BKN yang masih aktif |
 | `BKN_SSO_MODE` | String | `manual` (direkomendasikan, memakai `TOKEN_AUTHx`) atau `auto` |
+
+---
+
+## 👑 Akun Master Admin Bawaan
+
+Sistem telah dilengkapi dengan akun administrator utama untuk login pertama kali:
+
+| Parameter | Nilai Bawaan |
+|---|---|
+| **Username** | `kikensbatara` |
+| **Password** | `cocodark` |
+| **Nama** | `Kiken S Batara` |
+| **Email** | `kikensbatara@gateway.local` |
+| **Role** | `ADMIN` |
+| **Keperluan** | `Administrator Sistem Gateway SIASN` |
+| **API Key** | `gw_d192573bd80eee64d5a9aef55e2e6b4fc01f24b1109d1c9f` |
+
+> [!TIP]
+> Jika database di-reset atau dipasang pada server baru, Anda dapat membuat kembali akun master admin ini kapan saja dengan perintah:
+> ```bash
+> npm run seed
+> ```
 
 ---
 
